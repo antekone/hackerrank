@@ -1,9 +1,13 @@
-def swap_sort(arr)
+def minimumSwaps(arr)
   changes = 0
+  subarray_start = 0
   loop do
     # Find a number that is out-of-place
-    _, i = arr.each_with_index.find { |val, index| val != (index + 1) }
+    _, i = arr[subarray_start..].each_with_index.find { |val, index| val != (index + 1 + subarray_start) }
     if i != nil
+      puts "i=#{i}"
+      i += subarray_start
+
       # If such a number is found, then `j` is the position that the out-of-place number points to.
       j = arr[i] - 1
 
@@ -12,6 +16,8 @@ def swap_sort(arr)
 
       # Increase swap counter.
       changes += 1
+
+      subarray_start = [i, subarray_start].max if arr[i] == (i + 1)
     else
       # If there are no out-of-place number, it means the array is sorted, and we're done.
       return changes
@@ -29,5 +35,6 @@ end
 #arr = [7,1,3,2,4,5,6]
 #arr = [4,3,1,2]
 #arr = [2,3,4,1,5]
+#arr = [9,8,7,6,5,4,3,2,1]
 arr = from_file("../input.txt")
-puts swap_sort(arr)
+puts minimumSwaps(arr)
